@@ -8,6 +8,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TokenHistoryController;
 use Illuminate\Routing\RouteUri;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\AlertController;
+use App\Http\Controllers\MetricController;
+
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -35,6 +38,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/superadmin/getevent', [EventController::class, 'getEventById']);
     Route::get('/superadmin/allusers', [SuperAdminController::class, 'allusers']);
     Route::get('/superadmin/myusers', [SuperAdminController::class, 'myusers']);
+    Route::get('/superadmin/alert', [AlertController::class, 'superAlert']);
+    Route::post('/superadmin/alertupdate', [AlertController::class, 'superAlertUpdate']);
+    Route::get('/superadmin/metrics', [MetricController::class, 'getMetrics']);
+    Route::post('/superadmin/metricsupdate', [MetricController::class, 'updateMetrics']);
 
 
     // Admin routes
@@ -53,6 +60,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/updateevent', [EventController::class, 'updateEvent']);
 
 
+
+    Route::get('/user/alert', [AlertController::class, 'clientAlert']);
     Route::get('/user/events', [EventController::class, 'listLiveEvents']);
 });
 
