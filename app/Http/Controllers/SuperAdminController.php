@@ -86,7 +86,8 @@ class SuperAdminController extends Controller
             'username' => 'required|unique:users',
             'phone' => 'required',
             'password' => 'required|min:6',
-            'level' => 'required'
+            'level' => 'required',
+            'expiry_date' => 'date|after:today',
         ]);
 
         $superadmin = Auth::user();
@@ -97,7 +98,15 @@ class SuperAdminController extends Controller
         $tokenType  = $request->user_type === 'demo' ? 'demo' : 'live';
         $tokenField = $tokenType . '_tokens';
 
-
+        if (!$request->expiry_date) {
+            if ($request->user_type === 'demo') {
+                $expiry_date = Carbon::now()->addDays(1); // Demo users expire in 7 days
+            } else {
+                $expiry_date = Carbon::now()->addDays(30); // Live users expire in 30 days
+            }
+        } else {
+            $expiry_date = Carbon::parse($request->expiry_date);
+        }
 
         $admin = User::findOrFail($request->admin_id);
 
@@ -117,6 +126,7 @@ class SuperAdminController extends Controller
             'is_active' => 1,
             'level' => $request->level,
             'period' => $request->period,
+            'expiry_date' => $expiry_date,
         ]);
 
         TokenTransfer::create([

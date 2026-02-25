@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Event;
 use App\Models\TokenTransfer;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -33,6 +34,17 @@ class AdminController extends Controller
             return response()->json(['message' => 'No tokens left'], 400);
         }
 
+
+        if (!$request->expiry_date) {
+            if ($request->user_type === 'demo') {
+                $expiry_date = Carbon::now()->addDays(1); // Demo users expire in 7 days
+            } else {
+                $expiry_date = Carbon::now()->addDays(30); // Live users expire in 30 days
+            }
+        } else {
+            $expiry_date = Carbon::parse($request->expiry_date);
+        }
+
         $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
@@ -44,6 +56,7 @@ class AdminController extends Controller
             'is_active' => 1,
             'level' => $request->level,
             'period' => $request->period,
+            'expiry_date' => $expiry_date
         ]);
 
         TokenTransfer::create([

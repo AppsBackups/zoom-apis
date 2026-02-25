@@ -25,6 +25,13 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
+        if (!$user->is_active) {
+            return response()->json(['message' => 'Account is inactive'], 403);
+        }
+        if ($user->expiry_date && now()->greaterThan($user->expiry_date)) {
+            return response()->json(['message' => 'Account has expired'], 403);
+        }
+
 
         return response()->json([
             'token' => $user->createToken('mobile')->plainTextToken,

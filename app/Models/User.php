@@ -31,7 +31,7 @@ class User extends Authenticatable
     ];
 
 
-    protected $hidden = ['password'];
+    // protected $hidden = ['password'];
 
 
     public function admin()
