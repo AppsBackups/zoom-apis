@@ -226,8 +226,23 @@ class EventController extends Controller
     }
 
 
-    public function generateEventJwt()
+    public function generateEventJwt(Request $request)
     {
+        $request->validate([
+            'eid' => 'required|exists:events,id',
+            'userdeviceid' => 'required|string'
+        ]);
+
+        $event = Event::find($request->eid);
+
+        if (!$event || !$event->estatus) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Event not found or inactive'
+            ]);
+        }
+
+
         $sdkKey = 'WW2q78PkTumfgClrjkRpcA';
         $sdkSecret = 'LHh85zD9vG4awE1f7yE8lKAxzU3rJ2Wo';
 
