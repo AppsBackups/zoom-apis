@@ -20,7 +20,7 @@ class AdminController extends Controller
             'name' => 'required',
             'username' => 'required|unique:users',
             'phone' => 'required',
-            'password' => 'required|min:6',
+            'password' => 'required|min:4',
             'level' => 'required',
         ]);
 

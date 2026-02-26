@@ -18,7 +18,7 @@ class SuperAdminController extends Controller
             'name' => 'required',
             'username' => 'required|unique:users',
             'phone' => 'required',
-            'password' => 'required|min:6',
+            'password' => 'required|min:4',
             'demo_tokens' => 'nullable|integer|min:0',
             'live_tokens' => 'nullable|integer|min:0'
         ]);
@@ -85,7 +85,7 @@ class SuperAdminController extends Controller
             'name' => 'required',
             'username' => 'required|unique:users',
             'phone' => 'required',
-            'password' => 'required|min:6',
+            'password' => 'required|min:4',
             'level' => 'required',
             'expiry_date' => 'date|after:today',
         ]);
@@ -369,7 +369,7 @@ class SuperAdminController extends Controller
             'name' => 'sometimes|required',
             'username' => 'sometimes|required|unique:users,username,' . $admin->id,
             'phone' => 'sometimes|required',
-            'password' => 'sometimes|min:6'
+            'password' => 'sometimes|min:4'
         ]);
         if ($request->filled('password')) {
             $data['password'] = bcrypt($request->password);
@@ -398,7 +398,7 @@ class SuperAdminController extends Controller
             'name' => 'sometimes|required',
             'username' => 'sometimes|required|unique:users,username,' . $user->id,
             'phone' => 'sometimes|required',
-            'password' => 'sometimes|min:6',
+            'password' => 'sometimes|min:4',
             'level' => 'sometimes|required',
             'expiry_date' => 'sometimes|date|after:today',
         ]);
