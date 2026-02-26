@@ -43,7 +43,7 @@ class SuperAdminController extends Controller
             'name' => $request->name,
             'username' => $request->username,
             'phone' => $request->phone,
-            'password' => bcrypt($request->password),
+            'password' => $request->password,
             'role' => 'admin',
             'demo_tokens' => $request->demo_tokens ?? 0,
             'live_tokens' => $request->live_tokens ?? 0,
@@ -119,7 +119,7 @@ class SuperAdminController extends Controller
             'name' => $request->name,
             'username' => $request->username,
             'phone' => $request->phone,
-            'password' => bcrypt($request->password),
+            'password' => $request->password,
             'role' => 'user',
             'user_type' => $request->user_type,
             'admin_id' => $request->admin_id,
@@ -320,6 +320,7 @@ class SuperAdminController extends Controller
                 'id'             => $admin->id,
                 'name'           => $admin->name,
                 'username'       => $admin->username,
+                "password"       => $admin->password,
                 'phone'          => $admin->phone,
                 'demo_tokens'    => $admin->demo_tokens,
                 'live_tokens'    => $admin->live_tokens,
@@ -404,7 +405,7 @@ class SuperAdminController extends Controller
 
         $data = $request->only(['name', 'username', 'phone', 'level', 'expiry_date']);
         if ($request->filled('password')) {
-            $data['password'] = bcrypt($request->password);
+            $data['password'] = $request->password;
         }
 
         $user->update($data);
@@ -507,6 +508,7 @@ class SuperAdminController extends Controller
                     'id'             => $user->id,
                     'name'           => $user->name,
                     'username'       => $user->username,
+                    "password"       => $user->password,
                     'phone'          => $user->phone,
                     'user_type'      => $user->user_type,
                     'is_active'      => $user->is_active,
