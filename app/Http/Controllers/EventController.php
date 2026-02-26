@@ -183,7 +183,7 @@ class EventController extends Controller
 
 
 
-    public function generateEventJwt(Request $request)
+    public function generateEventJwtold(Request $request)
     {
         $request->validate([
             'eid' => 'required|exists:events,id',
@@ -199,8 +199,10 @@ class EventController extends Controller
             ]);
         }
 
-        $sdkKey = config('services.zoom.sdk_key');
-        $sdkSecret = config('services.zoom.sdk_secret');
+        // $sdkKey = config('services.zoom.sdk_key');
+        $sdkKey = 'WW2q78PkTumfgClrjkRpcA';
+        // $sdkSecret = config('services.zoom.sdk_secret');
+        $sdkSecret = 'LHh85zD9vG4awE1f7yE8lKAxzU3rJ2Wo';
 
         $iat = time();
         $exp = $iat + (60 * 60 * 2); // 2 hours
@@ -220,6 +222,30 @@ class EventController extends Controller
         return response()->json([
             'error' => false,
             'signature' => $jwt
+        ]);
+    }
+
+
+    public function generateEventJwt()
+    {
+        $sdkKey = 'WW2q78PkTumfgClrjkRpcA';
+        $sdkSecret = 'LHh85zD9vG4awE1f7yE8lKAxzU3rJ2Wo';
+
+        $iat = time();
+        $exp = $iat + (60 * 60 * 2);
+
+        $payload = [
+            'appKey' => $sdkKey,
+            'iat' => $iat,
+            'exp' => $exp,
+            'tokenExp' => $exp
+        ];
+
+        $jwt = JWT::encode($payload, $sdkSecret, 'HS256');
+
+        return response()->json([
+            'error' => false,
+            'token' => $jwt
         ]);
     }
 }
