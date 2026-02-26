@@ -49,7 +49,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'username' => $request->username,
             'phone' => $request->phone,
-            'password' => bcrypt($request->password),
+            'password' => $request->password,
             'role' => 'user',
             'user_type' => $request->user_type,
             'admin_id' => $admin->id,
@@ -129,7 +129,7 @@ class AdminController extends Controller
 
         $data = $request->only(['name', 'username', 'phone', 'level', 'expiry_date']);
         if ($request->filled('password')) {
-            $data['password'] = bcrypt($request->password);
+            $data['password'] = $request->password;
         }
 
         $user->update($data);
